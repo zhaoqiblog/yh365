@@ -1,0 +1,274 @@
+button{
+//                  .button;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    &.blubg{
+        background: #42a6d4;
+        border: none;
+        color: #FFFFFF;
+    }
+}
+.img-style {
+    width: 90px;
+    height: 90px;
+    border-radius: 5px;
+}
+.textarea{resize: none;}
+.button{
+           background: #42a6d4;
+           color: #FFFFFF; 
+           padding: 8px 25px;
+           border: none;
+        }
+.show-table{
+    >div.new-model{
+        margin: 20px 0 10px;
+        button{
+          .button;
+          padding: 0;
+        }
+    }
+    .application-list{
+        ul{
+            li{
+                float: left;
+                dl{
+                    dt{
+                        width: 150px;
+                        height: 150px;
+                        background: #f5f6fa;
+                        img{width: 90px;height:90px;margin-top:30px;text-align: center;border-radius: 5px;}
+                        margin-right:20px;
+                    }
+                    dd{line-height: 30px;}
+                }
+            }
+        }
+    }
+}
+.detail-cont{
+    display: none;
+    text-align: left;
+    color: #2f3941;
+    h3{margin: 20px 0 18px;display: inline-block;font-weight: 900;font-size: 16px;}
+    h3:before{content: " ";display:inline-block;height:14px;width:10px;border-left: 4px solid #42a6d4;}
+    ul{text-align: left;
+        li{line-height: 25px;}
+    }
+.show-table{
+    .detail-list{border-bottom: 1px dashed #d9dee4;padding-bottom: 20px;
+        >div{
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            .areas{margin-right: 20px;
+                &.areaName{
+                    margin-left: 75px;
+                }
+            }
+        }
+        .back-btn{background: #42a6d4;color: white;padding: 10px 40px;border: none;}
+    }
+}
+}
+.detail-cont{
+    display: none;
+    .del{
+        background: #FFFFFF;
+        color:#333333;
+        border: 1px solid #CCCCCC;
+        margin-left: 10px;
+    }
+    .module-top{
+        width: 100%;
+        margin-bottom: 20px;
+        >div{
+            >img{
+              .img-style;
+              width: 115px;
+              height: 115px;
+              margin-right: 20px;
+            }
+        }
+        button{
+            .button;
+            width: 100px;
+            height:30px;
+            padding: 0;
+            line-height: 30px;
+            &.del{
+                background: #FFFFFF;
+                color:#333333;
+                border: 1px solid #CCCCCC;
+            }
+        }
+        
+    }
+    .module-mid{
+        h4{font-size: 14px;}
+        div{line-height: 20px;}
+        margin-bottom:15px;
+    }
+    .detail-module-list{
+        border-top: 1px dashed #CCCCCC;
+        button{
+            .button;
+            width: 100px;
+            height:30px;
+            padding: 0;
+            line-height: 30px;
+            &.del{
+               background: #FFFFFF;
+                color:#333333;
+                border: 1px solid #CCCCCC;
+                margin-left: 10px; 
+            }
+        }
+        .linkVersion{
+            label{
+                width: 60px;
+                text-align: right;
+                line-height: 25px;
+            }
+        }
+    }
+    //新增模块
+    .module-content{
+//      margin-top: 20px;
+        li{
+//          height: 40px;
+//          line-height: 40px;
+            position: relative;
+            margin-bottom: 20px;
+            >label{
+               margin-right: 20px;
+               &:before{
+                content:"*";
+                color: red;
+                }
+        }
+            input[type="text"],select{
+                width: 140px;
+                height: 30px;
+                border: 1px solid #CCCCCC;
+                padding-left: 5px;
+            }
+            >img{
+                margin-left: 80px;
+            }
+        }
+        .uptip{
+            color: #a0a0a0;
+        }
+        .selectImg{
+            position: relative;
+            input[type="file"]{
+                width: 100px;
+                height: 30px;
+                opacity: 0;
+            }
+            .toselect{
+                position: absolute;
+                top: 0;
+                height: 0;
+                z-index: -1;
+                width: 100px;
+                height: 30px;
+                line-height: 30px;
+                background: #42a6d4;
+                color: #FFFFFF;
+                text-align: center;
+                &.up{
+                    left: 120px;
+                    top: 0;
+                    z-index: 2;
+                }
+            }
+        }
+        .showImgss{
+            width: 50px;
+            margin-top: 20px;
+        }
+        .submit-wrap{
+            
+            button{
+              width: 100px;
+              height: 30px;
+              line-height: 30px;
+              color: #FFFFFF;
+              background: #42a6d4;
+              border: none;
+              &.del{margin-left: 20px;background: #FFFFFF;color: #000000;border: 1px solid #CCCCCC;}
+            }
+            margin-left: 80px;
+            
+        }
+    }
+    //新增版本
+    &#new-version{
+        .selectImg{
+            position: absolute;
+            top: 0;
+            left: 80px;
+            input[type="file"]{
+                width: 100px;
+                height: 30px;
+                opacity: 0;
+            }
+            .toselect{
+                position: absolute;
+                top: 0;
+                height: 0;
+                z-index: -1;
+                width: 100px;
+                height: 30px;
+                line-height: 30px;
+                background: #42a6d4;
+                color: #FFFFFF;
+                text-align: center;
+                &.up{
+                    left: 120px;
+                    top: 0;
+                    z-index: 2;
+                }
+            }
+        }
+        ul{
+            li{
+                
+
+            }
+        }
+    }
+    #version-detail{
+        h3{
+            >span{
+//              display: inline-block;
+margin-left: 10px;
+font-size: 12px;
+font-weight: 100;
+padding: 3px 5px;
+background: #93be2d;
+color: #FFFFFF;
+            }
+        }
+        .module-top{
+            img{width: 90px;height: 90px;}
+        }
+        .button{
+//          width: 200px;
+            
+        }
+    }
+}
+.app-right .tip{
+    left: 240px;
+    top: 0;
+}
+&.submit-btn{
+    margin-left: 73px;
+}
+
+#isLink{display: none;}
+

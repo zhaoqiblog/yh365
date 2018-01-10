@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>用户管理-平台内控</title>
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/common.css" />
+	<link rel="stylesheet" href="../css/inter-exter-management.css">
+    <link rel="stylesheet" href="../styl/bootstrap.min.css"/>
+    <script src="../js/jquery-1.12.4.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/common.js"></script>
+   
+</head>
+
+<body>
+    <header>
+        <div class="header clearfix contents">
+            <img src="../images/logo_content.png" />
+            <li class="dropdown fr">
+                <span class="username"></span>
+                <a href="javascript:;" id="logout">退出</a>
+            </li>
+        </div>
+    </header>
+    <div id="menuTree" class="nav-menu"></div>
+     <script type="text/javascript">
+		getMenu("920532982146883584","920835385996722304");
+	</script>
+    <div class="right-cont">
+        <div class="table-cont">
+            <div class="right-nav clearfix">
+                <span class="fl">当前位置:</span>
+                <ol class="breadcrumb fl">
+                    <li>首页</li>
+                    <li>用户管理</li>
+                    <li class="active" roleName="isp_platform_controller">平台内控</li>
+                </ol>
+            </div>
+            <div class="show-table" id="nationCont">
+                <div class="formsSearch areaform">
+                	<form class="clearfix" action="javasctipt:void(0)" id="searchFrom">
+                		<div class="fr right">
+                			<button id="search">搜索</button>
+                		</div>
+                		<div class="fl left clearfix">
+	                			<div class="label-group clearfix fl">
+		                			<label class="form-label">所属区域</label>
+		                			<script id="firstArea" type="text/x-smarty-tmpl">
+								        {foreach $contents as $i => $con}
+								            <option value="{$con.id}">{$con.name}</option>
+					                    {/foreach}
+					                </script>
+					                <!--<div class="fr group-sel">
+			                			<select name="secondRegionId" id="firstAreaVal">
+			                				<option value="">请选择区域</option>
+			                			</select>
+		                			</div>-->
+		                			<input id="citySel" type="text" readonly value="" style="width:140px;" placeholder="请选择区域"/>
+									<input id="firstAreaVal" type="hidden" name="secondRegionId" readonly value="" style="width:140px;" />
+								</div>
+	                			<div class="label-group clearfix fl">
+		                			<label class="form-label fl">工号</label>
+		                			<input type="text" name="userJobNum" id="" value="" class="fr" placeholder="请输入工号"/>
+								</div>
+	                			<div class="label-group clearfix fl">
+		                			<label class="form-label fl">姓名</label>
+		                			<input type="text" name="userName" id="" value="" class="fr" placeholder="请输入姓名"/>
+								</div>
+	                			<div class="label-group clearfix fl">
+		                			<label class="form-label fl">状态</label>
+		                			<select name="status" class="fr" id="eventVal">
+		                				<option value="">请选择</option>
+		                				<option value="ABLE">有效</option>
+		                				<option value="DISABLE">无效</option>
+		                			</select>
+								</div>
+	                			<div class="label-group clearfix fl">
+		                			<label class="form-label fl">分工</label>
+		                			<select name="" class="fr" id="">
+		                				<option value="">请选择</option>
+		                			</select>
+								</div>
+	                			<input type="hidden" name="roleCode" id="" value="isp_platform_controller" />
+                		</div>
+                		
+                	</form>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+	                        <th>姓名</th>
+	                        <th>工号</th>
+	                        <th width="71%">所属区域</th>
+	                        <th>分工</th>
+	                        <!--<th>所属小店</th>-->
+	                        <th>状态</th>
+	                        <th>操作</th>
+	                    </tr>
+                    </thead>
+            		<script id="tpl" type="text/x-smarty-tmpl">
+			            {foreach $content as $i => $con}
+				            {$sta=''}
+				            {javascript}
+				            	if(con.status=='ABLE'){
+				            		sta="有效"
+				            	}else if(con.status==null){
+				            		sta="暂无"
+				            	}else{
+				            		sta="无效"
+				            	}
+				            {/javascript}
+			             	<tr>
+		                        <th>{$con.userName}</th>
+		                        <th>{$con.userJobNum}</th>
+		                        <th>{$con.secondRegionName}</th>
+		                        <th>{}分工</th>
+		                        <!--<th>{$con.shopName}</th>-->
+		                        <th class="{$con.status}"><span>{$sta}</span></th>
+		                        <th><a href="javascript:void(0)" class="alert-btn" userJobNum="{{$con.userJobNum}}">修改</a></th>
+                            </tr>
+                        {/foreach}
+                    </script>
+                    <tbody id="person-list">       
+                    </tbody>
+                </table>
+                <div class="page-cont pr">
+                	<script id="pageNum" type="text/x-smarty-tmpl">
+	                  	<span>第<span>{$number}</span>页</span>,<span>共<span>{$totalPages}</span>页</span><span>(每页{$size}条)</span>
+                    </script>
+	                  <div class="page-mesg page-mesg1 pa" id="pagetips">
+	                  </div>
+	                  <div id="pageNumber"></div>
+              	</div> 
+            </div>
+        </div>
+    </div>
+    <!--详情页-->
+        <div class="detail-cont detail-change">
+            <div class="show-table" id="detailInfo">
+            	<div class="formsSearch clearfix">
+            		<div class="clearfix">
+	            		<div class="clearfix closeBtn fr">
+	            			<span class="fr"><img src="../images/close.png"/></span>
+	            		</div>
+            		</div>
+                	<h2>修改管理</h2>
+                	<form id="changeForm">
+                		<ul id="">
+	                		<li>
+	                			<label>工&nbsp;&nbsp;&nbsp;&nbsp;号</label>
+	                			<input type="text" disabled="disabled" name="userJobNum" id="numChange"/>
+	                		</li>
+	                		<li>
+	                			<label>姓&nbsp;&nbsp;&nbsp;&nbsp;名</label>
+	                			<input type="text" disabled="disabled" name="userName" id="nameChange"/>
+	                		</li>
+	                	</ul>
+	                	<ul>
+	                		<li>
+	                			<label>所属区域</label>
+	                			<!--<select name="secondRegionId" id="areaMul"  class="multiselect" multiple="multiple">
+	                			</select>-->
+	                			<input id="editSel" type="text" readonly value="" style="width:345px;" placeholder="请选择区域"/>
+								<input id="editVal" type="hidden" name="secondRegionId" value="" />
+	                			<div class="tip err"><i class="error-tip inline-block">!</i><span>请选择所属区域</span></div>
+	                		</li>
+	                		<input type="hidden" name="secondIds" id="secondIds" value="" />
+	                		<li>
+	                			<label>分工</label>
+	                			<select name="" id="">
+	                			</select>
+	                			<div class="tip err"><i class="error-tip inline-block">!</i><span>请选择所属区域</span></div>
+	                		</li>
+	                		<li>
+	                			<label>角色状态</label>
+	                			<span class="radiosel">
+	                				<label class="radio-group pr">
+				                        <input type="radio" name="status" value="ABLE" class="pa ui-radio" /><span class="field-label">有效</span>
+				                    </label>
+				                    <label class="radio-group pr">
+				                        <input type="radio" name="status" value="DISABLE" class="pa ui-radio" /><span class="field-label">禁用</span>
+				                    </label>
+	                			</span>
+	                			<div class="tip err"><i class="error-tip inline-block">!</i><span></span></div>
+	                		</li>
+	                		<li><div id="submit">提交</div></li>
+	                	</ul>
+                	</form>
+                </div>
+            </div>
+        </div>
+         <div id="menuContent1" class="menuContent" style="display:none; position: absolute;">
+			<ul id="treeDemo1" class="ztree" style="margin-top:0; width:345px; height: 300px;"></ul>
+		</div>
+        <div id="menuContent" class="menuContent" style="display:none; position: absolute;">
+			<ul id="treeDemo" class="ztree" style="margin-top:0; width:180px; height: 300px;"></ul>
+		</div>
+</body>
+ <script src="../js/laypage.js"></script>
+    <script src="../js/smart.min.js"></script>
+    <script src="../js/layer/layer.js"></script>
+    <script src="../js/bootstrap-multiselect.js"></script>
+    <script src="../js/zTree_v3/js/jquery.ztree.core.min.js"></script>
+    <script src="../js/zTree_v3/js/jquery.ztree.excheck.min.js"></script>
+    <script src="js/control-plate.js"></script>
+</html>

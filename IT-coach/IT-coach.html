@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>
+        IT教练
+    </title>
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="it-coach.css">
+    <link rel="stylesheet" href="../styl/bootstrap.min.css" />
+    <link rel="stylesheet" href="../styl/tree.css">
+    <!--<script src="../js/jquery-1.12.4.min.js"></script>
+    <script src="../js/common.js"></script>-->
+    <!--<script src="../js/vue.min.js"></script>
+    <script src="../js/laypage.js"></script>
+    <script src="../js/jquery.easyui.min.js"></script>
+    <script src="it-coach.js"></script>
+    <script src="../js/bootstrap.min.js"></script>-->
+
+</head>
+
+<body>
+    <header>
+        <div class="header clearfix contents">
+            <img src="../images/logo_content.png" />
+            <li class="dropdown fr">
+                <span class="username"></span>
+                <a href="javascript:;" id="logout">退出</a>
+            </li>
+        </div>
+    </header>
+    <div id="menuTree" class="nav-menu"></div>
+    <script type="text/javascript">
+    	relogin()
+    	getMenu("","875593831181344768");
+    	logout()
+    </script>
+    <div class="right-cont" id="shopCont">
+        <!-- 用户列表 -->
+        <div class="table-cont">
+            <div class="right-nav clearfix">
+                <span class="fl">当前位置:</span>
+                <ol class="breadcrumb fl">
+                    <li>首页</li>
+                    <li>ISP管理中心</li>
+                    <li class="active">IT教练门店管理</li>
+                </ol>
+            </div>
+            <div class="search-cont fl clearfix">
+                <div class="form-group fl">
+                    <span class="col-sm-2 control-label">姓名</span>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="请输入姓名" v-model="param.name">
+                    </div>
+                </div>
+                <div class="form-group fl">
+                    <span class="col-sm-2 control-label">工号</span>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="请输入工号" v-model="param.userNo">
+                    </div>
+                </div>
+                <div class="form-group fl">
+                    <span class="col-sm-2 control-label">手机号码</span>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="请输入手机号" v-model="param.mobile">
+                    </div>
+                </div>
+                <a href="javascript:;" class="search-btn inline-block fl" @click="query();">搜索</a>
+            </div>
+            <div class="show-table">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>工号</th>
+                            <th>手机号码</th>
+                            <th>姓名</th>
+                            <th>负责门店</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="person-list">
+                        <template v-for="list in shopList">
+                            <tr>
+                                <td>{{list.userNo}}</td>
+                                <td>{{list.userMobile}}</td>
+                                <td>{{list.userName}}</td>
+                                <td>{{list.shopName}}</td>
+                                <td><span class="label label-success">{{list.status.name}}</span></td>
+                                <td><a href="javascript:;" class="alert-btn" @click="alertData(list.id,list.userNo,list.userMobile,list.userName,list.shopName,list.status.code,list.officeMapIds)">修改</a></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <template v-if="pagenum!=null&&totalpage!=null">
+                    <div class="page-cont pr">
+                        <div class="page-mesg pa"><span>第{{pagenum}}页</span>,<span>共{{totalpage}}页</span><span>(每页10条)</span>
+                        </div>
+                        <div id="pageNumber"></div>
+                    </div>
+                </template>
+            </div>
+        </div>
+        <!--  修改用户 -->
+        <div class="alert-cont">
+            <div class="right-nav clearfix">
+                <span class="fl">当前位置:</span>
+                <ol class="breadcrumb fl">
+                    <li>首页</li>
+                    <li>用户管理</li>
+                    <li>IT教练</li>
+                    <li class="active">修改用户</li>
+                </ol>
+            </div>
+            <form class="form-horizontal clearfix" role="form">
+                <br>
+                <div class="form-group">
+                    <span for="name" class="col-sm-2 control-label">工号:</span>
+                    <div class="col-sm-10">
+                        <input type="text" readonly="" v-model="userno" class="input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span for="name" class="col-sm-2 control-label">姓名:</span>
+                    <div class="col-sm-10">
+                        <input type="text" readonly="" v-model="username" class="input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span for="name" class="col-sm-2 control-label">手机号码:</span>
+                    <div class="col-sm-10">
+                        <input type="text" readonly="" v-model="usertel" class="input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 control-label">负责门店:</span>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control store" data-options="prompt:'请选择门店'">
+                        <a href="javascript:;" class="choose-btn inline-block pa">+选择</a>
+                    </div>
+                </div>
+                <div class="form-group status-select">
+                    <span class="col-sm-2 control-label">角色状态:</span>
+                    <label class="radio-group pr">
+                        <input type="radio" name="supplier-type" class="pa ui-radio" value="actived" v-model='status'/><span class="field-label">有效</span>
+                    </label>
+                    <label class="radio-group pr">
+                        <input type="radio" name="supplier-type" class="pa ui-radio"  value="inactive" v-model='status'/><span class="field-label">禁用</span>
+                    </label>
+                </div>
+                <div class="btn-groups fl">
+                    <a href="javascript:;" class="submit-btn inline-block" @click="submitAlert()">提交</a>
+                    <a href="javascript:;" class="back-btn inline-block">返回</a>
+                </div>
+            </form>
+        </div>
+        <!-- 添加用户 -->
+        <!--            <div class="add-cont">
+ <div class="right-nav clearfix">
+     <span class="fl">当前位置:</span>
+     <ol class="breadcrumb fl">
+         <li>首页</li>
+         <li>用户管理</li>
+         <li>IT教练</li>
+         <li class="active">添加用户</li>
+     </ol>
+ </div>
+ <form class="form-horizontal clearfix" role="form">
+     <br>
+     <div class="form-group">
+         <span for="name" class="col-sm-2 control-label">工号:</span>
+         <div class="col-sm-10">
+             <input type="text" class="form-control" placeholder="请输入工号">
+         </div>
+     </div>
+     <div class="form-group">
+         <span for="name" class="col-sm-2 control-label">姓名:</span>
+         <div class="col-sm-10">
+             <input type="text" class="form-control" placeholder="请输入姓名">
+         </div>
+     </div>
+     <div class="form-group">
+         <span for="name" class="col-sm-2 control-label">手机号码:</span>
+         <div class="col-sm-10">
+             <input type="text" class="form-control" placeholder="请输入手机号">
+         </div>
+     </div>
+     <div class="form-group">
+         <span class="col-sm-2 control-label">负责门店:</span>
+         <div class="col-sm-10">
+             <input type="text" class="form-control store" data-options="prompt:'请增加门店'">
+             <a href="javascript:;" class="choose-btn inline-block pa">+选择</a>
+         </div>
+     </div>
+     <div class="form-group status-select">
+         <span class="col-sm-2 control-label">角色状态:</span>
+         <label class="radio-group pr">
+             <input type="radio" name="supplier-type" value="0" class="pa ui-radio" /><span class="field-label">有效</span>
+         </label>
+         <label class="radio-group pr">
+             <input type="radio" name="supplier-type" value="1" class="pa ui-radio" /><span class="field-label">禁用</span>
+         </label>
+     </div>
+     <div class="btn-groups fl">
+         <a href="#" class="submit-btn inline-block">提交</a>
+         <a href="#" class="back-btn inline-block">返回</a>
+     </div>
+ </form>
+        </div> -->
+    </div>
+      <!-- 消息提示 -->
+    <div class="pop" style="display: none;">
+        <div class="pop-cont"></div>
+    </div>
+    <script src="../js/jquery-1.12.4.min.js"></script>
+    
+    <script src="../js/common.js"></script>
+    <script src="../js/vue.min.js"></script>
+    <script src="../js/laypage.js"></script>
+    <script src="../js/jquery.easyui.min.js"></script>
+    <script src="it-coach.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>
+        报障信息管理列表
+    </title>
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="assure-manage.css">
+    <link rel="stylesheet" href="../styl/bootstrap.min.css" />
+    <link rel="stylesheet" href="../styl/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="../styl/star-rating.min.css">
+    <!--<script src="../js/jquery-1.12.4.min.js"></script>
+    <script src="../js/vue.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../js/laypage.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="jquery.binarytransport.js"></script>
+   <script src="assure-manage.js"></script>
+    <script src="../js/star-rating.min.js"></script>-->
+</head>
+
+<body>
+    <header>
+        <div class="header clearfix contents">
+            <img src="../images/logo_content.png" />
+            <li class="dropdown fr">
+                <span class="username"></span>
+                <a href="javascript:;" id="logout">退出</a>
+            </li>
+        </div>
+    </header>
+    <div id="menuTree" class="nav-menu"></div>
+    <div class="right-cont">
+        <div class="table-cont" id="assureCont">
+            <div class="right-nav clearfix">
+                <span class="fl">当前位置:</span>
+                <ol class="breadcrumb fl">
+                    <li>首页</li>
+                    <li>报障信息管理</li>
+                    <li class="active">报障信息管理列表</li>
+                </ol>
+            </div>
+            <div class="search-cont fl clearfix">
+                <div class="form-group fl">
+                    <span class="col-sm-2 control-label">一级区域:</span>
+                    <div class="down-menu pr fl">
+                        <input class="select-inp" type="text" readonly="readonly" v-model="firstRegion" placeholder="请选择一级区域" />
+                        <i class="btn-down btn-spr i-down"></i>
+                        <div class="menu sup-type">
+                            <ul>
+                                <template v-for="item in firstRegionList">
+                                    <li @click="choosefirstRegion(item.id,item.name)">{{item.name}}</li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group fl secondregion" style="display: none;">
+                    <span class="col-sm-2 control-label">二级区域:</span>
+                    <div class="down-menu pr fl">
+                        <input class="select-inp" type="text" readonly="readonly" v-model="secondRegion" placeholder="请选择二级区域" />
+                        <i class="btn-down btn-spr i-down"></i>
+                        <div class="menu sup-type">
+                            <ul>
+                                <template v-for="item in secondRegionList">
+                                    <li @click="choosesecRegion(item.id,item.name)">{{item.name}}</li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <form action="" method='get' id="myform" onsubmit="return sumbitTest()">
+                    <div class="form-group fl">
+                        <span class="col-sm-2 control-label">单据编号</span>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-input" placeholder="请输入单据编号" id="documentId">
+                        </div>
+                    </div>
+                    <div class="form-group fl">
+                        <span class="col-sm-2 control-label">单据类型:</span>
+                        <div class="down-menu pr fl">
+                            <input class="select-inp" type="text" readonly="readonly" v-model="originName" placeholder="请选择单据类型" />
+                            <i class="btn-down btn-spr i-down"></i>
+                            <div class="menu sup-type">
+                                <ul>
+                                    <template v-for="item in originType">
+                                        <li @click="chooseDoctype(item.code,item.name)">{{item.name}}</li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group fl">
+                        <span class="col-sm-2 control-label">报障类型:</span>
+                        <div class="down-menu pr fl">
+                            <input class="select-inp" type="text" readonly="readonly" v-model="faultName" placeholder="请选择报障类型" />
+                            <i class="btn-down btn-spr i-down"></i>
+                            <div class="menu sup-type">
+                                <ul>
+                                    <template v-for="item in faultType">
+                                        <li @click="choosefaultType(item.code,item.name)">{{item.name}}</li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group fl">
+                        <span class="col-sm-2 control-label">单据状态:</span>
+                        <div class="down-menu pr fl">
+                            <input class="select-inp" type="text" readonly="readonly" v-model="statusName" placeholder="请选择单据状态" />
+                            <i class="btn-down btn-spr i-down"></i>
+                            <div class="menu sup-type">
+                                <ul>
+                                    <template v-for="item in status">
+                                        <li @click="chooseStatus(item.code,item.name)">{{item.name}}</li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fl clearfix">
+                        <span class="col-sm-2 control-label">发布日期</span>
+                        <div class='fl'>
+                            <div class="form-group fl">
+                                <div class='input-group date'>
+                                    <input type='text' class="form-control" readonly id='starttime' onchange="chooseStarttime(this.value)" />
+                                    <span class="input-group-addon">
+                                      <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="fl until">至</span>
+                        <div class='fl'>
+                            <div class="form-group fl">
+                                <div class='input-group date'>
+                                    <input type='text' class="form-control" id='endtime' readonly @change="chooseEndtime(this.value)" />
+                                    <span class="input-group-addon">
+                                 <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="javascript:;" class="search-btn inline-block fl" @click="query()">搜索</a>
+                       <a href="javascript:;" download class="export-btn inline-block fl" @click="exportWorkList()"  target="_self">导出</a>                   <!-- <input type="submit" value="导出" /> -->
+                </form>
+            </div>
+            <div class="show-table">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>单据编号</th>
+                            <th>报障类型</th>
+                            <th>报障人</th>
+                            <th>一级区域</th>
+                            <th>二级区域</th>
+                            <th>报障地点</th>
+                            <th>对应教练</th>
+                            <th>受理人</th>
+                            <th>报障时间</th>
+                            <th>单据状态</th>
+                        </tr>
+                    </thead>
+                    <tbody id="person-list" class="tbody">
+                        <template v-for="list in assureList">
+                            <tr @click="queryDetailData(list.id,list.status.name,list.status.code==1?list.currentAcceptUserName:list.acceptUserName)">
+                                <td class="document-number">{{list.id}}</td>
+                                <td class="ensure-type">{{list.faultType.name}}</td>
+                                <td class="ensure-person">{{list.declareUserName}}</td>
+                                <td class="firstregion">{{list.firstRegionName}}</td>
+                                <td class="secregion">{{list.secondRegionName}}</td>
+                                <td class="ensure-place">{{list.address}}</td>
+                                <td class="it-coach">
+                                    <template v-if="list.status.code==1">{{list.currentAcceptUserName}} </template>
+                                    <template v-else>{{list.acceptUserName}}</template>
+                                </td>
+                                <td class="receiver">{{list.currentAcceptUserName}}</td>
+                                <td class="ensure-time">{{list.declareDate}}</td>
+                                <td class="ensure-status">{{list.status.name}}</td>
+                            </tr>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <div class="page-cont pr">
+                    <div class="page-mesg pa"><span>第{{pagenum}}页</span>,<span>共{{totalpage}}页</span><span>(每页10条)</span>
+                    </div>
+                    <div id="pageNumber"></div>
+                </div>
+            </div>
+        </div>
+        <div class="alert-cont clearfix" id="alertCont">
+            <div class="right-nav clearfix">
+                <span class="fl">当前位置:</span>
+                <ol class="breadcrumb fl">
+                    <li>首页</li>
+                    <li>报障信息管理</li>
+                    <li><a href="assure-manage-list.html">报障信息管理列表</a>
+                    </li>
+                    <li class="document-id">{{docid}}</li>
+                </ol>
+            </div>
+            <div class="ensure-detail fl">
+                <h1 class="h1-tit">单据编号：<span class="document-id">{{docid}}</span> (<span class="status">{{status}}</span>)</h1>
+                <div class="detail-item fir-part fl">
+                    <h4 class="h4-tit">报障人：<span class="warning-person">{{detail.declareUserName}}</span><span class="warning-person-tel">({{detail.declareUserMobile}})</span></h4>
+                    <p><span>报障地点：{{detail.address}}</span>
+                    </p>
+                    <p>对应教练：{{itName}}</p>
+                    <p>设备名称：{{detail.deviceName}}
+                    </p>
+                    <p>设备型号：{{detail.deviceModel}}
+                    </p>
+                    <p>故障描述：{{detail.description}}
+                    </p>
+                    <div class="img-part clearfix">
+                        <ul>
+                            <template v-for=" item in picture">
+                                <li>
+                                    <img :src="item" alt="">
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                    <p>报障时间：<span>{{detail.declareDate}}</span>
+                    </p>
+                </div>
+                <template v-if="detail.solutions">
+                    <template v-for="item in detail.solutions">
+                            <div class="detail-item fl">
+                                <h4 class="h4-tit">{{item.solutionType.name}}：<span class="it-coach">{{item.processUserName}}</span>(<span class="coach-tel">{{item.mobile}}</span>)</h4>
+                                <p>处理意见：<span>{{item.description}}</span>
+                                </p>
+                                <template v-if="item.picture!=''">
+                                    <div class="img-part clearfix">
+                                        <ul>
+                                            <template v-for=" index in item.picture.split('|')">
+                                                <li>
+                                                    <img :src="index" alt="">
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                </template>
+                                <p>报障时间：<span>{{item.processDate}}</span>
+                                </p>
+                            </div>
+                    </template>
+                </template>
+                <template v-if="statuscode==6&&detail.evaluate!=null">
+                    <div class="evaluate-part fl">
+                        <h5 class="h5-tit">保障人评价</h5>
+                        <div class="clearfix"><span>响应效率：</span>
+                            <input type="text" id="aa" class="rating fl" data-size="sm" title="" v-model="detail.evaluate.response" readonly>
+                        </div>
+                        <div class="clearfix"><span>处理速度：</span>
+                            <input type="text" class="rating fl" data-size="sm" title="" v-model="detail.evaluate.timeliness" readonly>
+                        </div>
+                        <div class="clearfix"><span>服务态度：</span>
+                            <input type="text" class="rating" data-size="sm" title="" v-model="detail.evaluate.attitude" readonly>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+    <script src="../js/jquery-1.12.4.min.js"></script>
+    <script src="../js/vue.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../js/laypage.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="jquery.binarytransport.js"></script>
+   <script src="assure-manage.js"></script>
+    <script src="../js/star-rating.min.js"></script>
+</body>
+
+</html>

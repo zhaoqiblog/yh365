@@ -1,0 +1,7 @@
+/*新建*/
+#new-customer .formsSearch h3{display: block;}
+#new-customer .formsSearch .money{margin: 20px 0;}
+#new-customer .formsSearch .label-group li>label{width: 75px;text-align: right;margin-right: 20px;}
+#new-customer .formsSearch .label-group li>label:before{content: "*";color: red;}
+#new-customer .formsSearch .label-group li>.radiosel{display: inline-block;margin-bottom: 20px;}
+input{border: 1px solid #CCCCCC;}

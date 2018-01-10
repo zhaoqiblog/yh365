@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>
+        轮播图管理
+    </title>
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../content-manage/content-manage.css">
+    <link rel="stylesheet" href="../styl/bootstrap.min.css" />
+    <link rel="stylesheet" href="../styl/bootstrap-datetimepicker.min.css">
+    <script type="text/javascript" charset="utf-8" src="../js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../js/ueditor/ueditor.all.min.js">
+    </script>
+    <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+    <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+    <script type="text/javascript" charset="utf-8" src="../js/ueditor/lang/zh-cn/zh-cn.js"></script>
+     <script src="../js/jquery-1.12.4.min.js"></script>
+     <script src="../js/common.js"></script>
+    <script src="../js/vue.min.js"></script>
+     <script src="../js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    
+</head>
+
+<body>
+    <header>
+       <div class="header clearfix contents">
+            <img src="../images/logo_content.png" />
+            <li class="dropdown fr">
+                <span class="username"></span>
+                <a href="javascript:;" id="logout">退出</a>
+            </li>
+        </div>
+    </header>
+    <div id="menuTree" class="nav-menu"></div>
+    <script type="text/javascript">
+    	getMenu("875593547210186752","879979578554519552");
+    	logout()
+    </script>
+    <div class="right-cont" id="articleCont">
+        <div class="table-cont">
+            <div class="right-nav">
+                <span class="fl">当前位置:</span>
+                <ol class="breadcrumb fl">
+                    <li>首页</li>
+                    <li>轮播图管理</li>
+                </ol>
+                <a href="javascript:;" class="add-btn inline-block fr">添加banner</a>
+            </div>
+            <div class="search-cont fl clearfix">
+                <span class="col-sm-2 control-label">发布日期</span>
+                <div class="form-group fl">
+                    <div class='input-group date'>
+                        <input type='text' class="form-control" readonly id='starttime' onchange="setstartdate(this.value)" />
+                        <span class="input-group-addon sttime">
+                                      <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <span class="fl until">至</span>
+                <div class="form-group fl">
+                    <div class='input-group date'>
+                        <input type='text' class="form-control" id='endtime' readonly/>
+                        <span class="input-group-addon">
+                                 <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group fl">
+                    <span class="col-sm-2 control-label">标题</span>
+                    <input type="text" class="form-control title" placeholder="请输入关键字" />
+                </div>
+                <a href="javascript:;" class="search-btn inline-block fl" @click="query()">搜索</a>
+            </div>
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th class="checkth">
+                            <input type="checkbox" id="checkAll" name="checkAll" />
+                        </th>
+                        <th>banner标题</th>
+                        <th>banner图片</th>
+                        <th>状态</th>
+                        <th>发布时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <template v-for="list in articleList">
+                    <tbody id="person-list">
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="checkItem" class="checkitem" />
+                            </td>
+                            <td class="listid" style="display: none">{{list.id}}</td>
+                            <td>{{list.title}}</td>
+                            <td class="article-img"><img :src="list.image" alt="" /></td>
+                            <td>{{list.status.name}}</td>
+                            <td>{{list.pubDate}}</td>
+                            <td><a href="javascript:;" class="alert-btn" @click="alertArticle(list.id,list.title,list.image,list.status.code,list.postId)">修改</a></td>
+                        </tr>
+                    </tbody>
+                </template>
+            </table>
+            <!-- @click="deleteArticle()" -->
+            <template v-if="pagenum!=null&&totalpage!=null">
+                <div class="page-cont pr">
+                    <span class="inline-block fl"><a href="javascript:;" class="inline-block delete-article" @click="deleteConfirm()" >删除banner</a></span>
+                    <div class="page-mesg"><span>第{{pagenum}}页</span>,<span>共{{totalpage}}页</span><span>(每页10条)</span>
+                    </div>
+                    <div id="pageNumber"></div>
+                </div>
+            </template>
+        </div>
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">提示</h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" @click="deleteArticle()">
+                            确定
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="add-cont">
+            <div class="right-nav clearfix">
+                <span class="fl">当前位置:</span>
+                <ol class="breadcrumb fl">
+                    <li>首页</li>
+                    <li>内容管理</li>
+                    <li class="active">添加banner</li>
+                </ol>
+            </div>
+            <form class="form-horizontal clearfix" role="form">
+                <br>
+                <div class="form-group">
+                    <span for="name" class="col-sm-2 control-label">*banner标题:</span>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control tit-input" placeholder="请输入标题" v-model="addparam.title">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span for="name" class="col-sm-2 control-label">关联知识编号:</span>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control tit-input" placeholder="请输入知识编号" v-model="addparam.postId">
+                    </div>
+                </div>
+                <!--   <div class="form-group">
+                  <span for="name" class="col-sm-2 control-label">*banner图片:</span>
+                  <script id="editor" type="text/plain" style="width:450px;height:140px;margin-left:112px"></script>
+                  <div id="img_preview_one" style="float:left;">
+                      <div class="alert alert-success" role="alert" style="float:left;margin-left:112px;"><strong><span class="glyphicon glyphicon-flag"></span>点击左侧图片图标上传图片:</strong>&nbsp;&nbsp;图片大小不超过1m,格式为jpg,png,宽750高280为佳</div>
+                  </div>
+              </div> -->
+                <div class="form-group">
+                    <span for="name" class="col-sm-2 control-label">*banner图片(只取第一张图片):</span>
+                    <script id="coverimg" type="text/plain"></script>
+                    <div class="col-sm-10 clearfix pr bannerimg-area">
+                        <img :src="addcoverimg" alt="" style="width: 370px;height: 140px;" />
+                        <a class="upload-banner inline-block pa" href="javascript:void(0);" onclick="openImgDialog();">+</a>
+                        <p>建议尺寸388*240（png/jpg格式）</p>
+                    </div>
+                </div>
+                <div class="form-group status-select">
+                    <span class="col-sm-2 control-label">Banner状态:</span>
+                    <label class="radio-group pr">
+                        <input type="radio" name="supplier-type" value="ENABLED" class="pa ui-radio" v-model="addparam.status" /><span class="field-label">有效</span>
+                    </label>
+                    <label class="radio-group pr">
+                        <input type="radio" name="supplier-type" value="DISABLE" class="pa ui-radio" v-model="addparam.status" /><span class="field-label">禁用</span>
+                    </label>
+                </div>
+                <div class="btn-groups fl">
+                    <a href="javascript:;" class="submit-btn inline-block" @click="addArticle()">提交</a>
+                    <a href="#" class="back-btn inline-block">返回</a>
+                </div>
+            </form>
+        </div>
+        <!-- 修改小知识 -->
+        <div class="alert-cont">
+            <div class="right-nav clearfix">
+                <span class="fl">当前位置:</span>
+                <ol class="breadcrumb fl">
+                    <li>首页</li>
+                    <li>内容管理</li>
+                    <li class="active">修改banner</li>
+                </ol>
+            </div>
+            <form class="form-horizontal clearfix" role="form">
+                <br>
+                <div class="form-group">
+                    <span for="name" class="col-sm-2 control-label">*banner标题:</span>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control tit-input" placeholder="请输入标题" v-model="alertparam.title">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span for="name" class="col-sm-2 control-label">关联知识编号:</span>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control tit-input" placeholder="请输入知识编号" v-model="alertparam.postId">
+                    </div>
+                </div>
+                <!--   <div class="form-group">
+                <span for="name" class="col-sm-2 control-label">*banner图片:</span>
+                <div class="col-sm-10 clearfix pr bannerimg-area">
+                    <span class="upload-banner inline-block pa">+</span>
+                </div>
+                            </div> -->
+                <div class="form-group">
+                    <span for="name" class="col-sm-2 control-label">*banner图片(只取第一张图片):</span>
+                    <script id="alertcoverimg" type="text/plain"></script>
+                    <div class="col-sm-10 clearfix pr bannerimg-area">
+                        <img :src="addcoverimg" alt="" style="width: 370px;height: 140px;" />
+                        <a class="upload-banner inline-block pa" href="javascript:void(0);" onclick="alertImgDialog();">+</a>
+                        <p>建议尺寸388*240（png/jpg格式）</p>
+                    </div>
+                </div>
+                <div class="form-group status-select">
+                    <span class="col-sm-2 control-label">Banner状态:</span>
+                    <label class="radio-group pr">
+                        <input type="radio" name="supplier-type" value="ENABLED" class="pa ui-radio" v-model="alertstatus" /><span class="field-label">有效</span>
+                    </label>
+                    <label class="radio-group pr">
+                        <input type="radio" name="supplier-type" value="DISABLE" class="pa ui-radio" v-model="alertstatus" /><span class="field-label">禁用</span>
+                    </label>
+                </div>
+                <div class="btn-groups fl">
+                    <a href="javascript:;" class="submit-btn inline-block" @click="alertArticleDetail()">提交</a>
+                    <a href="#" class="back-btn inline-block">返回</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- 消息提示 -->
+    <div class="pop" style="display: none;">
+        <div class="pop-cont"></div>
+    </div>
+    <!--<script src="../js/jquery-1.12.4.min.js"></script>
+    <script src="../js/vue.min.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/laypage.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap-datetimepicker.min.js"></script>
+    <script src="banner-manage.js"></script>-->
+    
+    <script src="../js/laypage.js"></script>
+   
+    <script src="banner-manage.js"></script>
+</body>
+
+</html>

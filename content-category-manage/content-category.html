@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>
+        分类管理
+    </title>
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styl/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/common.css" />
+	<link rel="stylesheet" href="../css/content-category-manage/content-manage.css">
+    <script src="../js/jquery-1.12.4.min.js"></script>
+    <script src="../js/layer/layer.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/smart.min.js"></script>
+    
+    <style type="text/css">
+    	/*.show-table{height: 100%;}*/
+    	.pop{display: none;}
+    </style>
+   
+</head>
+
+<body>
+    <header>
+        <div class="header clearfix contents">
+            <img src="../images/logo_content.png" />
+            <li class="dropdown fr">
+                <span class="username"></span>
+                <a href="javascript:;" id="logout">退出</a>
+            </li>
+        </div>
+    </header>
+    <div id="menuTree" class="nav-menu"></div>
+    <script type="text/javascript">
+		getMenu("875593547210186752","879535374133039104");
+		relogin()
+	</script>
+    <div class="right-cont" id="category-cont">
+        <div class="right-nav clearfix">
+            <span class="fl">当前位置:</span>
+            <ol class="breadcrumb fl">
+                <li>首页</li>
+                <li>内容管理</li>
+                <li class="active">分类管理</li>
+            </ol>
+        </div>
+        <div class="show-table" id="">
+        	<div class="categoryLists clearfix">
+	        	<div class="category-level fl" style="display: block;">
+	        		<p class="clearfix">
+	        			<span class="fl">知识库</span>
+	        			<span class="fr"><a href="javascript:;" pid="" id="firstNew" class="newCategory">+添加分类</a></span>
+	        		</p>
+	        		<table>
+	        			<thead>
+	        				<tr>
+	        					<th>分类名称1</th>
+	        					<!--<th>状态</th>-->
+	        					<th>操作</th>
+	        				</tr>
+	        			</thead>
+	        				<script id="firstList" type="text/x-smarty-tmpl">
+						        {foreach $firstList as $i => $con}
+						            <tr class="normal">
+			        					<td class="editName" pid="{$con.parentId}" id="{$con.id}" text="{$con.text}"><i class="names">{$con.text}</i></td>
+			        					<td class="handel" pid="{$con.parentId}" id="{$con.id}" text="{$con.text}"><a href="javascript:;" class="edits">编辑</a>&nbsp;/&nbsp;<a href="javascript:;" class="deletes">删除</a>&nbsp;&nbsp;&nbsp;<i><img src="../images/right.png"></i></td>
+			        				</tr>
+			                    {/foreach}
+			                </script>
+	        			<tbody id="firstListWrap">
+	        			</tbody>
+	        		</table>
+	        	</div>
+	        	
+	        		<script id="secondList" type="text/x-smarty-tmpl">
+	        			
+	        			<p class="clearfix">
+		        			<span class="fl">知识库 ><span>{$secondList.text}</span></span>
+		        			<span class="fr"><a href="javascript:;" pid="{$secondList.id}" class="newCategory">+添加分类</a></span>
+		        		</p>
+		        		<table>
+		        			<thead>
+		        				<tr>
+		        					<th>分类名称1</th>
+		        					<th>操作</th>
+		        				</tr>
+		        			</thead>
+		        			<tbody id="secondListWrap">
+						        {foreach $secondList.children as $i => $con}
+						            <tr class="normal">
+			        					<td class="editName" pid="{$con.parentId}" id="{$con.id}" text="{$con.text}"><i class="names">{$con.text}</i></td>
+			        					<td class="handel" class="handel" pid="{$con.parentId}" id="{$con.id}" text="{$con.text}"><a href="javascript:;" class="edits">编辑</a>&nbsp;/&nbsp;<a href="javascript:;">删除</a>&nbsp;&nbsp;&nbsp;<i><img src="../images/right.png"></i></td>
+			        				</tr>
+			        				
+			                    {/foreach}
+		        				 <tr id="secondNo" style="display: none;"><td>暂无数据！</td><td></td></tr>
+		                    </tbody>
+	        			</table>
+	        			<!--</div>-->
+	        		 </script>
+	        		
+	        		<!--<div id="seconds">-->
+	        		<div class="category-level fl" id="seconds">	
+	        		</div>
+	        		<!--<div >-->
+	        			<div class="category-level fl" id="thirds">
+	        			
+	        		</div>
+	        		<script id="thirdList" type="text/x-smarty-tmpl">
+	        			
+	        			<p class="clearfix">
+		        			<span class="fl">知识库 ><span>{$thirdList.text}</span><span>>{$thirdList.pText}</span></span>
+		        			<span class="fr"><a href="javascript:;" pid="{$thirdList.id}" class="newCategory">+添加分类</a></span>
+		        		</p>
+		        		<table>
+		        			<thead>
+		        				<tr>
+		        					<th>分类名称1</th>
+		        					<th>操作</th>
+		        				</tr>
+		        			</thead>
+		        			<tbody id="secondListWrap">
+						        {foreach $thirdList.children as $i => $con}
+						            <tr class="normal">
+			        					<td class="editName" pid="{$con.parentId}" id="{$con.id}" text="{$con.text}"><i class="names">{$con.text}</i></td>
+			        					<td class="handel" class="handel" pid="{$con.parentId}" id="{$con.id}" text="{$con.text}"><a href="javascript:;" class="edits">编辑</a>&nbsp;/&nbsp;<a href="javascript:;">删除</a></td>
+			        				</tr>
+			                    {/foreach}
+		        				 <tr id="thidrNo" style="display: none;"><td>暂无数据！</td><td></td></tr>
+		                    </tbody>
+	        			</table>
+	        			<!--</div>-->
+	        		 </script>
+        	</div>
+        </div>
+    </div>
+    <div class="pop">
+        <div class="pop-cont"></div>
+    </div>
+    <div class="tips-edit">
+    	<span class="abEdit">双击编辑</span>
+    </div>
+    <input type="text" placeholder="请输入分类名称" id="newcategory" />
+    <script src="content-category-new.js"></script>
+     <script type="text/javascript">
+    	$(".show-table").height($(".right-cont").height()-80)
+    </script>
+</body>
+
+</html>

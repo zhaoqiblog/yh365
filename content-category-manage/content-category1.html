@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>
+        分类管理
+    </title>
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    	<link rel="stylesheet" type="text/css" href="../js/thems/jquery-eaysui.css">
+    <link rel="stylesheet" href="../content-manage/content-manage.css">
+    <link rel="stylesheet" href="../styl/bootstrap.min.css" />
+    <script src="../js/jquery-1.12.4.min.js"></script>
+    <script src="../js/jquery.easyui.min.js"></script>
+    <script src="../js/vue.min.js"></script>
+    <script src="../js/common.js"></script>
+    <!--<script src="content-category.js"></script>-->
+    <script src="../js/bootstrap.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header clearfix contents">
+            <img src="../images/logo_content.png" />
+            <li class="dropdown fr">
+                <span class="username"></span>
+                <a href="javascript:;" id="logout">退出</a>
+            </li>
+        </div>
+    </header>
+    <div id="menuTree" class="nav-menu"></div>
+    <div class="right-cont clearfix" id="category-cont">
+        <div class="right-nav clearfix">
+            <span class="fl">当前位置:</span>
+            <ol class="breadcrumb fl">
+                <li>首页</li>
+                <li>内容管理</li>
+                <li class="active">分类管理</li>
+            </ol>
+        </div>
+        <div class="fl type-optbtn"><a href="javascript:;" class="optbtn-add disabled" @click="addtype()">增加下级<!-- add-category --></a>
+        	<a class="optbtn-delete disabled" @click="deletetype()">删除分类</a></div>
+        <div class="category">
+          <div class="easyui-panel" style="padding:5px">
+		<ul class="easyui-tree" data-options="animate:true" class="category"></ul>
+	</div>
+        </div>
+    </div>
+      <!-- 消息提示 -->
+    <div class="pop" style="display: none;">
+        <div class="pop-cont"></div>
+    </div>
+    <!--<script src="../js/jquery-1.12.4.min.js"></script>-->
+    <!--<script src="../js/jquery.easyui.min.js"></script>-->
+    <!--<script src="../js/vue.min.js"></script>-->
+    <!--<script src="../js/common.js"></script>-->
+    <script src="content-category.js"></script>
+    <!--<script src="../js/bootstrap.min.js"></script>-->
+</body>
+
+</html>

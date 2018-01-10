@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>应用列表</title>
+		<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="../styl/bootstrap.min.css" />
+		<link rel="stylesheet" href="../styl/bootstrap-datetimepicker.min.css">
+		<link rel="stylesheet" href="../internalControl/mincss/common.css" />
+		<!--<link rel="stylesheet" href="../internalControl/mincss/inter-exter-management.css">-->
+		<link rel="stylesheet" href="css/application.css" />
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script src="../js/common.js"></script>
+		<!--<script src="../js/laypage.js"></script>-->
+		<script src="../js/smart.min.js"></script>
+		<script src="../js/layer/layer.js"></script>
+		<script src="../js/megapix-image.js"></script>
+		<!--<script src="../js/jquery.binarytransport.js"></script>-->
+		<!--<script src="../js/bootstrap-datetimepicker.min.js"></script>-->
+		<script src="js/local-list.js"></script>
+	</head>
+
+	<body>
+		<header>
+			<div class="header clearfix contents">
+				<img src="../images/logo_content.png" />
+				<li class="dropdown fr">
+					<span class="username"></span>
+					<a href="javascript:;" id="logout">退出</a>
+				</li>
+			</div>
+		</header>
+		<div id="menuTree" class="nav-menu"></div>
+		<script type="text/javascript">
+	    	getMenu("922661878481649730","922661878481649734")
+	    	logout()
+			$(window).on("resize",function(){
+				$("#menuTree").height($(".right-cont").height())
+			})
+	    </script>
+		<div class="right-cont app-right">
+			<div class="table-cont">
+				<div class="right-nav clearfix">
+					<span class="fl">当前位置:</span>
+					<ol class="breadcrumb fl">
+						<li>首页</li>
+						<li>应用列表</li>
+						<li class="active">应用列表</li>
+					</ol>
+				</div>
+				<div class="show-table" id="nationCont">
+					<div class="new-model clearfix"><button class="fl" id="newModuleBtn">新增应用</button></div>
+					<script id="tpl" type="text/x-smarty-tmpl">
+			            {foreach $listData as $i => $con}
+			             	<li >
+								<dl >
+									<dt onlyId="{$con.id}" class="nation-list"><img src="{$con.icon}"/></dt>
+									<dd>{$con.name}</dd>
+								</dl>
+							</li>
+                        {/foreach}
+                    </script>
+					<div class="application-list">
+						<ul class="clearfix" id="tpllist"></ul>
+					</div>
+				</div>
+			</div>
+
+			<!--应用详情页-->
+			<div class="detail-cont show-table" id="moduleDetail" >
+				<div class="application-details">
+					<div class="right-nav clearfix">
+						<span class="fl">当前位置:</span>
+						<ol class="breadcrumb fl">
+							<li>首页</li>
+							<li>应用列表</li>
+							<li class="active">应用详情</li>
+						</ol>
+					</div>
+					
+						<script id="moduleTop" type="text/x-smarty-tmpl">
+							<h3>应用详情</h3>
+							<div class="clearfix module-top">
+								<div class="fl">
+									<img src="{$topInfo.icon}"/>
+								</div>
+								<div class="fl">
+									<ul>
+										<li>模块类型：<span> {$topInfo.moduleType.name}</span></li>
+										<li>应用名称：<span>{$topInfo.name}</span></li>
+										<li>应用类别：<span>{$topInfo.appType.name}</span></li>
+										<!--<li>是否隐藏：<span>{$topInfo.showBadge.name}</span></li>-->
+										<li>模块标识：<span>{$topInfo.moduleFlag}</span></li>
+									</ul>
+									<button id="detailToEdit" onlyId="{$topInfo.id}">编辑</button>
+									<button class="del" id="deleteModule" onlyId="{$topInfo.id}">删除</button>
+									<button class="del" id="detailToList">返回</button>
+								</div>
+							</div>
+							<ul class="module-mid">
+								<li>
+									<h4>模块简介</h4>
+									<div>{$topInfo.description}</div>
+								</li>
+							</ul>
+						</script>
+					<div class="formsSearch detail-list" id="moduleTmp">	
+					</div>
+					<div class="detail-module-list" id="">
+						<h3>历史版本</h3>
+						<div>
+							<button id="toNewVersion">添加版本</button> 
+						</div>
+						<table class="table">
+						<thead>
+							<tr>
+								<th>版本号</th>
+								<th>版本功能</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<script id="moduleList" type="text/x-smarty-tmpl">
+							{foreach $detailVersion as $i => $con}
+							<tr>
+								<th>{$con.version}</th>
+								<th>{$con.description}</th>
+								<th>
+									<a href="javascript:void(0)" class="alert-btn toEditVersion" versionId="{{$con.id}}">编辑</a>
+									<a href="javascript:void(0)" class="alert-btn toVersionDetail" versionId="{{$con.id}}">查看</a>
+									<a href="javascript:void(0)" class="alert-btn deleteVersion" versionId="{{$con.id}}" style="color: red !important;">删除</a>
+								</th>
+							</tr>
+							{/foreach}
+						</script>
+						<tbody id="person-list"></tbody>
+					</table>
+					<div class="page-cont pr">
+						<script id="pageNum" type="text/x-smarty-tmpl">
+							<span>第<span>{$curr}</span>页</span>,<span>共<span>{$allpage}</span>页</span><span>(每页{$size}条)</span>
+						</script>
+						<div class="page-mesg page-mesg1 pa" id="pagetips">
+						
+						</div>
+						<div id="pageNumber"></div>
+					</div>
+					</div>
+				</div>
+			</div>
+			<!--新增模块-->
+			<div class="detail-cont show-table" id="new-module" >
+				<div class="application-details">
+					<div class="right-nav clearfix">
+						<span class="fl">当前位置:</span>
+						<ol class="breadcrumb fl">
+							<li>首页</li>
+							<li>应用列表</li>
+							<li class="active">添加新应用</li>
+						</ol>
+					</div>
+					<div class="hide-module " id="" >
+						<div class="module-content">
+							<h3>添加新应用</h3>
+							<form id="appForm">
+							<ul>
+								<li>
+									<label>模块类型</label>
+									<span class="radiosel">
+		                				<label class="radio-group pr">
+					                        <input type="radio" name="moduleType" value="0" class="pa ui-radio modu" /><span class="field-label">本地包</span>
+					                    </label>
+					                    <label class="radio-group pr">
+					                        <input type="radio" name="moduleType" value="2" class="pa ui-radio modu" /><span class="field-label">原生包</span>
+					                    </label>
+					                    <label class="radio-group pr">
+					                        <input type="radio" name="moduleType" value="1" class="pa ui-radio modu" /><span class="field-label">外部链接</span>
+					                    </label>
+		                			</span>
+		                			<div class="tip err" style="left: 380px;"><i class="error-tip inline-block">!</i><span>请选择模块类型</span></div>
+								</li>
+								<li>
+									<label>应用名称</label>
+									<span><input type="text" name="name" placeholder="最多不超过6个字"/></span>
+									<div class="tip err"><i class="error-tip inline-block">!</i><span>应用名称不能为空</span></div>
+								</li>
+								<li>
+									<label>应用类别</label>
+									<span>
+										<select name="appType">
+											<option value="">选择类别</option>
+											<option value="0">内控服务</option>
+											<option value="1">营运服务</option>
+											<option value="2">IT服务</option>
+										</select>
+									</span>
+									<div class="tip err"><i class="error-tip inline-block">!</i><span>请选择应用类别</span></div>
+								</li>
+								<li id="isLink">
+									<label>链接地址</label>
+									<span><input type="text" name="url" placeholder=""/></span>
+									<div class="tip err"><i class="error-tip inline-block">!</i><span>链接地址不能为空</span></div>
+								</li>
+								<li class="clearfix">
+									<label class="fl">上传图标</label>
+									<div class="fl">
+										<p class="uptip">建议长宽小于90*90（png/jpg格式）</p>
+										<div class="selectImg">
+											<input type="file" accept="image/jpeg,image/jpg,image/png" id="iconInput"/>
+											<img src="" alt="" id="iconImg" class="showImgss"/>
+											<div class="toselect">选择文件</div>
+											<!--<div class="toselect up" isIcon="1">上传</div>-->
+											<!--<img src="http://222.76.27.59:9001/photo/isp/20171025/2017102511283482.jpg" alt="" id="showImgss" class="showImgss"/>-->
+										</div>
+										<input type="hidden" name="icon" value=""/>
+									</div>
+									<div class="tip err" style="left: 380px;"><i class="error-tip inline-block">!</i><span>请上传图标</span></div>
+								</li>
+								<li class="clearfix">
+									<label class="fl">上传角标</label>
+									<div class="fl">
+										<p class="uptip">建议长宽小于90*90（png/jpg格式）</p>
+										<div class="selectImg">
+											<input type="file" accept="image/jpeg,image/jpg,image/png,image/svg" id="badgeInput"/>
+											<img src="" alt="" id="badgeImg" class="showImgss"/>
+											<div class="toselect">选择文件</div>
+											<!--<div class="toselect up" isIcon="2">上传</div>-->
+											<!--<img src="http://222.76.27.59:9001/photo/isp/20171025/2017102511283482.jpg" alt="" id="" class="showImgss"/>-->
+										</div>
+										<input type="hidden" name="badge" value=""/>
+									</div>
+									<div class="tip err" style="left: 380px;"><i class="error-tip inline-block">!</i><span>请上传角标</span></div>
+								</li>
+								
+								<li>
+									<label>隐藏角标</label>
+									<span class="radiosel">
+		                				<label class="radio-group pr">
+					                        <input type="radio" name="showBadge" value="false" class="pa ui-radio" /><span class="field-label">是</span>
+					                    </label>
+					                    <label class="radio-group pr">
+					                        <input type="radio" name="showBadge" value="true" class="pa ui-radio" /><span class="field-label">否</span>
+					                    </label>
+		                			</span>
+		                			<div class="tip err"><i class="error-tip inline-block">!</i><span>请选择是否隐藏角标</span></div>
+								</li>
+								<li id="isApp">
+									<label>模块标识</label>
+									<span><input type="text" name="moduleFlag" placeholder=""/></span>
+									<div class="tip err"><i class="error-tip inline-block">!</i><span>模块标识不能为空</span></div>
+								</li>
+								
+								<li class="clearfix">
+									<label class="moduledescription fl">模块简介</label>
+									<textarea class="fl" name="description" rows="5" cols="100" placeholder="模块简介" resize></textarea>
+									<div class="tip err" style="left: 750px;"><i class="error-tip inline-block">!</i><span>模块简介不能为空</span></div>
+								</li>
+								<input type="hidden" name="id"/>
+								
+							</ul>
+							</form>
+							<div class="submit-wrap">
+								<button class="" id="submitApp">提交</button><button class="del" id="backModule" types="new">返回</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--新增编辑版本-->
+			<div class="detail-cont show-table detail-module-list" id="new-version" >
+				<div class="application-details">
+					<div class="right-nav clearfix">
+						<span class="fl">当前位置:</span>
+						<ol class="breadcrumb fl">
+							<li>首页</li>
+							<li>应用列表</li>
+							<li class="active">新增/编辑版本</li>
+						</ol>
+					</div>
+					
+					<div class="formsSearch detail-list" id="new-version">	
+						<div class="module-content">
+							<h3>添加/编辑新版本</h3>
+							<form id="newVersion" enctype="multipart/form-data">
+								<ul>
+									<li>
+										<label>版本</label>
+										<span><input type="text" name="version" placeholder="最多不超过6个字"/></span>
+										<div class="tip err"><i class="error-tip inline-block">!</i><span>请输入版本号</span></div>
+									</li>
+									<li>
+										<label>模块程序包</label>
+										<div class="selectImg">
+												<input type="file" accept="*.zip" id="" name="file"/>
+												<img src="" alt="" id="" style="display: none;"/>
+												<div class="toselect">选择文件</div>
+												<div class="toselect" class="up">上传模块程序包</div>
+										</div>
+										<div class="tip err"><i class="error-tip inline-block">!</i><span>请上传模块程序包</span></div>
+									</li>
+									<li class="clearfix">
+										<label class="moduledescription fl">版本简介</label>
+										<textarea class="fl" name="description" rows="5" cols="100" placeholder="版本简介"></textarea>
+										<div class="tip err" style="left: 700px;"><i class="error-tip inline-block">!</i><span>请输入版本简介</span></div>
+									</li>
+									
+									<input type="hidden" name="moduleId"/>
+									<input type="hidden" name="fileUrl" disabled="disabled"/>
+									<input type="hidden" name="md5" disabled="disabled"/>
+									<input type="hidden" name="versionId" disabled="disabled"/>
+									<!--<input type="hidden" name="buildVersion" value="1.0.2.0"/>-->
+								</ul>
+							</form>
+							<div class="submit-btn">
+								<button class="blubg" id="subVersion">添加版本</button>
+								<button class="del back">返回</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--查看版本-->
+			<div class="detail-cont show-table detail-module-list" id="detail-version" >
+				<div class="application-details">
+					<div class="right-nav clearfix">
+						<span class="fl">当前位置:</span>
+						<ol class="breadcrumb fl">
+							<li>首页</li>
+							<li>应用列表</li>
+							<li class="active">查看版本</li>
+						</ol>
+					</div>
+					<script id="verDetail" type="text/x-smarty-tmpl">
+							<h3>版本<span>{$detail.version}</span></h3>
+							<div class="clearfix module-top">
+								<div class="fl">
+									<img src="{$content.icon}"/>
+								</div>
+								<div class="fl">
+									<ul>
+										<!--<li>模块名称：<span> {$detail.description}</span></li>-->
+										<li><a href="{$detail.file}"><button class="button">下载模块程序包</button></a><button class="del" id="verDetailToVerList">返回</button></li>
+									</ul>
+								</div>
+							</div>
+							<ul class="module-mid">
+								<li>
+									<h4>模块简介</h4>
+									<div>{$detail.description}</div>
+								</li>
+							</ul>
+					</script>
+					<div class="formsSearch detail-list" id="version-detail"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

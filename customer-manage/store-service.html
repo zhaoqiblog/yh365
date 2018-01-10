@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>客诉管理-门店服务台</title>
+		<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="../styl/bootstrap.min.css" />
+		<link rel="stylesheet" href="../styl/bootstrap-datetimepicker.min.css">
+		<link rel="stylesheet" href="../internalControl/mincss/common.css" />
+		<link rel="stylesheet" href="../internalControl/mincss/inter-exter-management.css">
+		<link rel="stylesheet" href="css/customer-manage.css">
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/laypage.js"></script>
+		<script src="../js/smart.min.js"></script>
+		<script src="../js/layer/layer.js"></script>
+		<!--<script src="../js/jquery.binarytransport.js"></script>-->
+		<script src="../js/bootstrap-datetimepicker.min.js"></script>
+		<script src="js/plate-control.js"></script>
+		<style type="text/css">
+			.form-right{
+				width: 140px;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<div class="header clearfix contents">
+				<img src="../images/logo_content.png" />
+				<li class="dropdown fr">
+					<span class="username"></span>
+					<a href="javascript:;" id="logout">退出</a>
+				</li>
+			</div>
+		</header>
+		<div id="menuTree" class="nav-menu"></div>
+		<script type="text/javascript">
+			getMenu("920840367680593950","920840367680593971");
+			logout()
+		</script>
+		<div class="right-cont">
+			<div class="table-cont">
+				<div class="right-nav clearfix">
+					<span class="fl">当前位置:</span>
+					<ol class="breadcrumb fl">
+						<li>首页</li>
+						<li>客诉管理</li>
+						<li class="active">门店服务台</li>
+					</ol>
+				</div>
+				<div class="show-table" id="nationCont">
+					<div class="formsSearch">
+						<form class="clearfix" action="javasctipt:void(0)" id="searchFrom">
+							<div class="fr right">
+								<button id="search">搜索</button>
+							</div>
+							<div class="fl left clearfix">
+								<div class="label-group clearfix fl">
+									<label class="form-label">区域</label>
+									<script id="areasSel" type="text/x-smarty-tmpl">
+										{foreach $contents as $i => $con}
+										<option value="{$con.id}">{$con.name}</option>
+										{/foreach}
+									</script>
+									<select name="secondRegionId" class="fr" id="srea">
+										<option value="">请选择区域</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">门店</label>
+									<script id="secondStore" type="text/x-smarty-tmpl">
+										{foreach $contents as $i => $con}
+										<option value="{$con.id}">{$con.name}</option>
+										{/foreach}
+									</script>
+									<select name="storeId" class="fr" id="storeList">
+										<option value="">请选择门店</option>
+									</select>
+									<div class="tip err"><i class="error-tip inline-block">!</i>请先选择区域</div>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">年月</label>
+									<div class='input-group date fr'>
+										<input type='text' class="form-control" readonly id='eventDate' name="eventDate" />
+										<span class="input-group-addon sttime">
+				                            <span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">客诉编号</label>
+									<input type="text" name="eventCode" id="" value="" class="fr" placeholder="请输入事件编号"/>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">客诉原因</label>
+									<select name="eventType" class="fr" id="eventVal">
+										<option value="">请选择事件类型</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">处理结果</label>
+									<script id="dealType" type="text/x-smarty-tmpl">
+										{foreach $dealType as $i => $con}
+										<option value="{$con.code}">{$con.name}</option>
+										{/foreach}
+									</script>
+									<select name="dealType" class="fr" id="dealVal">
+										<option value="">请选择处理方式</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">是否立案</label>
+									<select name="isBlueEagle" class="fr">
+										<option value="">请选择</option>
+										<option value="1">是</option>
+										<option value="0">否</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">投诉人</label>
+									<select name="isReturnGoods" class="fr">
+										<option value="">请选择</option>
+										<option value="1">是</option>
+										<option value="0">否</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">所属小店</label>
+									<select name="isPayGoods" class="fr">
+										<option value="">请选择</option>
+										<option value="1">是</option>
+										<option value="0">否</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">当月完结</label>
+									<select name="isAlwaysSteal" class="fr">
+										<option value="">请选择</option>
+										<option value="1">是</option>
+										<option value="0">否</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">共同赔款</label>
+									<select name="fillPayOver" class="fr">
+										<option value="">请选择</option>
+										<option value="1">是</option>
+										<option value="0">否</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">状态</label>
+									<select name="overGoodsAmount" class="fr">
+										<option value="">请选择</option>
+										<option value="1">是</option>
+										<option value="0">否</option>
+									</select>
+								</div>
+							</div>
+							
+						</form>
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>客诉编号</th>
+								<th>区域</th>
+								<th>门店</th>
+								<th>客诉原因</th>
+								<th>处理结果</th>
+								<th>赔偿金额</th>
+								<th>是否立案</th>
+								<th>投诉人</th>
+								<th>所属小店</th>
+								<th>商品名称</th>
+								<th>当月完结</th>
+								<th>共同赔款</th>
+								<th>状态</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<script id="tpl" type="text/x-smarty-tmpl">
+							{foreach $content as $i => $con}
+							<tr>
+								<th>{$con.eventCode}</th>
+								<th>{$con.secondRegionName}</th>
+								<th>{$con.storeName}</th>
+								<th>{$con.eventType}</th>
+								<th>{$con.dealType}</th>
+								<th>{$con.isBlueEagle}</th>
+								<th>{$con.isReturnGoods}</th>
+								<th>{$con.overGoodsAmount}</th>
+								<th>{$con.overGoodsAmount}</th>
+								<th>{$con.fillPayOver}</th>
+								<th>{$con.fillPayOver}</th>
+								<th>{$con.eventDate}</th>
+								<th>{$con.eventDate}</th>
+								<th>
+									<a href="javascript:void(0)" class="alert-btn" stealRecordId="{{$con.id}}">查看</a>
+								</th>
+							</tr>
+							{/foreach}
+						</script>
+						<tbody id="person-list">
+						</tbody>
+					</table>
+					<div class="page-cont pr">
+						<button type="button" class="btn btn-default" id="exportList"><a href="javascript:exportToexcel()">导出</a></button>
+						<script id="pageNum" type="text/x-smarty-tmpl">
+							<span>第<span>{$curr}</span>页</span>,<span>共<span>{$allpage}</span>页</span><span>(每页{$size}条)</span>
+						</script>
+						<div class="page-mesg page-mesg1 pa" id="pagetips">
+						</div>
+						<div id="pageNumber"></div>
+					</div>
+				</div>
+			</div>
+
+			<!--详情页-->
+			<div class="detail-cont" id="details">
+				<div class="right-nav clearfix">
+					<span class="fl">当前位置:</span>
+					<ol class="breadcrumb fl">
+						<li>首页</li>
+						<li>内控服务管理</li>
+						<li>客诉管理</li>
+						<li class="active">详情</li>
+					</ol>
+				</div>
+				<script id="detailTep" type="text/x-smarty-tmpl">
+					<div class="formsSearch detail-list">
+						<h3>基本信息<span style="padding: 0 6px; border:1px solid #93be2d; color: #93BE2D;font-weight: 100;margin-left: 5px;font-size: 12px;">{$content.status}</span></h3>
+						<div>
+							<span class="areas">区域：<span>{$content.secondRegionName}</span></span>
+							<span class="areas areaName">门店：<span>{$content.storeName}</span></span>
+						</div>
+						<ul>
+							<li>提交日期：<span> {$content.createdDate}</span></li>
+							<li>填写人：<span>{$content.createrName}</span></li>
+							<li>电话：<span>{$content.createrPhone}</span></li>
+						</ul>
+					</div>
+					<div class="formsSearch detail-list">
+						<h3>处理信息</h3>
+						<ul>
+							<li>客诉编号 ：<span>{$content.eventCode}</span></li>
+							<li>客诉日期：<span>{$content.eventDate}</span></li>
+							<li>客诉原因：<span>{$content.offenderName}</span></li>
+							<li>处理结果：<span>{$content.isBlueEagle}</span></li>
+							<li>赔偿金额：<span>{$content.transactorName}</span></li>
+							<li>顾客/打假人：<span>{$content.eventType.label}</span></li>
+							<li>是否立案：<span>{$content.dealType.label}</span></li>
+							<li>共同赔款：<span>{$content.goodsAmount}</span></li>
+							<li>备注：<span>{$content.fillingMoney}</span></li>
+						</ul>
+					</div>
+						<div class="formsSearch detail-list">
+						<h3>商品信息</h3>
+						<ul>
+							<li>所属小店：<span>{$content.isReturnGoods}</span></li>
+							<li>商品名称：<span>{$content.isPayGoods}</span></li>
+							<li>商品条码：<span>{$content.isAlwaysSteal}</span></li>
+							<li>单价：<span>{$content.remark}</span></li>
+							<li>购买数量：<span>{$content.remark}</span></li>
+							<li>总额：<span>{$content.remark}</span></li>
+							<li>生产日期：<span>{$content.remark}</span></li>
+							<li>保质期：<span>{$content.remark}</span></li>
+							<li><button class="back-btn">返回</button></li>
+						</ul>
+						
+					</div>
+				</script>
+				<div class="show-table" id="detailInfo">
+
+				</div>
+			</div>
+			<!--新建客诉-->
+			<div class="detail-cont" id="new-customer" style="display: block;">
+				<div class="right-nav clearfix">
+					<span class="fl">当前位置:</span>
+					<ol class="breadcrumb fl">
+						<li>首页</li>
+						<li>内控服务管理</li>
+						<li>客诉管理</li>
+						<li class="active">新建客诉</li>
+					</ol>
+				</div>
+				
+				<div class="show-table" id="detailInfo">
+					<!--<script id="detailTep" type="text/x-smarty-tmpl">-->
+						<div class="formsSearch detail-list">
+							<h3 >处理信息</h3>
+							<ul class="label-group">
+								<li class="clearfix">
+									<label for="" class="fl">客诉年月</label>
+									<div class='input-group fl form-right'>
+										<input type='text' class="form-control" readonly id='eventDate' name="eventDate" />
+										<span class="input-group-addon sttime">
+				                            <span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div></li>
+								<li>
+									<label for="" >客诉原因</label>
+									<select name="">
+										<option value="">请选择客诉原因</option>
+									</select>
+								</li>
+								<li>
+									<label for="" >处理结果</label>
+									<select name="">
+										<option value="">请选择处理结果</option>
+									</select>
+								</li>
+								<li>
+									<label for="" >赔偿金额</label>
+									<input type="text" class="money"/> 元
+								</li>
+								<li>
+									<label for="">顾客/打假人</label>
+									<span class="radiosel">
+		                				<label class="radio-group pr">
+					                        <input type="radio" name="status" value="ABLE" class="pa ui-radio" /><span class="field-label">顾客</span>
+					                    </label>
+					                    <label class="radio-group pr">
+					                        <input type="radio" name="status" value="DISABLE" class="pa ui-radio" /><span class="field-label">打假人</span>
+					                    </label>
+		                			</span>
+								</li>
+								<li>
+									<label for="">是否立案</label>
+									<span class="radiosel">
+		                				<label class="radio-group pr">
+					                        <input type="radio" name="status" value="ABLE" class="pa ui-radio" /><span class="field-label">是</span>
+					                    </label>
+					                    <label class="radio-group pr">
+					                        <input type="radio" name="status" value="DISABLE" class="pa ui-radio" /><span class="field-label">否</span>
+					                    </label>
+		                			</span>
+								</li>
+								<li>
+									<label for="">共同赔款</label>
+									<span class="radiosel">
+		                				<label class="radio-group pr">
+					                        <input type="radio" name="status" value="ABLE" class="pa ui-radio" /><span class="field-label">是</span>
+					                    </label>
+					                    <label class="radio-group pr">
+					                        <input type="radio" name="status" value="DISABLE" class="pa ui-radio" /><span class="field-label">否</span>
+					                    </label>
+		                			</span>
+								</li>
+								<li class="clearfix">
+									<label for="" class="fl">共同赔款</label>
+									<textarea name="" rows="" cols=""></textarea>
+								</li>
+							</ul>
+						</div>
+							<div class="formsSearch detail-list">
+							<h3>商品信息</h3>
+							<ul>
+								<li>所属小店：<span>{$content.isReturnGoods}</span></li>
+								<li>商品名称：<span>{$content.isPayGoods}</span></li>
+								<li>商品条码：<span>{$content.isAlwaysSteal}</span></li>
+								<li>单价：<span>{$content.remark}</span></li>
+								<li>购买数量：<span>{$content.remark}</span></li>
+								<li>总额：<span>{$content.remark}</span></li>
+								<li>生产日期：<span>{$content.remark}</span></li>
+								<li>保质期：<span>{$content.remark}</span></li>
+								<li><button class="back-btn">返回</button></li>
+							</ul>
+							
+						</div>
+					<!--</script>-->
+				</div>
+			</div>
+		</div>
+		<div id="tong" class="" style="display: none;"><img src="../images/index_bg2.png" style="width: 100%;"></div>
+	</body>
+
+</html>

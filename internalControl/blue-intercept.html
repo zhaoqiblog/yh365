@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>蓝鹰截停管理</title>
+		<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="../styl/bootstrap.min.css" />
+		<link rel="stylesheet" href="../styl/bootstrap-datetimepicker.min.css">
+		<link rel="stylesheet" href="mincss/common.css" />
+		<link rel="stylesheet" href="mincss/inter-exter-management.css">
+		<link rel="stylesheet" href="../js/zTree_v3/css/demo.css" />
+		<link rel="stylesheet" href="../js/zTree_v3/css/zTreeStyle/zTreeStyle.css" />
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/laypage.js"></script>
+		<script src="../js/smart.min.js"></script>
+		<script src="../js/layer/layer.js"></script>
+		<script src="../js/jquery.binarytransport.js"></script>
+		<script src="../js/bootstrap-datetimepicker.min.js"></script>
+		 <script src="../js/zTree_v3/js/jquery.ztree.core.js"></script>
+        <script src="../js/zTree_v3/js/jquery.ztree.excheck.js"></script>
+		<script src="js/blue-intercept.js"></script>
+	</head>
+
+	<body>
+		<header>
+			<div class="header clearfix contents">
+				<img src="../images/logo_content.png" />
+				<li class="dropdown fr">
+					<span class="username"></span>
+					<a href="javascript:;" id="logout">退出</a>
+				</li>
+			</div>
+		</header>
+		<div id="menuTree" class="nav-menu"></div>
+		<script type="text/javascript">
+			getMenu("920840367680593950","920840367680593988");
+			logout()
+		</script>
+		<div class="right-cont">
+			<div class="table-cont">
+				<div class="right-nav clearfix">
+					<span class="fl">当前位置:</span>
+					<ol class="breadcrumb fl">
+						<li>首页</li>
+						<li>内控服务管理</li>
+						<li class="active">蓝鹰拦截管理</li>
+					</ol>
+				</div>
+				<div class="show-table" id="nationCont">
+					<div class="formsSearch">
+						<!--<p>功能尚未开放，敬请期待。。。</p>-->
+						<form class="clearfix" action="javasctipt:void(0)" id="searchFrom">
+							<div class="fr right">
+								<button id="search">搜索</button>
+							</div>
+							<div class="fl left clearfix">
+								<div class="label-group clearfix fl">
+									<label class="form-label">区域</label>
+									<script id="areasSel" type="text/x-smarty-tmpl">
+										{foreach $contents as $i => $con}
+										<option value="{$con.id}">{$con.name}</option>
+										{/foreach}
+									</script>
+									<!--<select name="secondRegionId" class="fr" id="srea">
+										<option value="">请选择区域</option>
+									</select>-->
+									<input id="citySel" type="text" readonly value="" style="width:140px;" onclick="showMenu();" placeholder="请选择区域"/>
+									<input id="srea" type="hidden" name="secondRegionId" readonly value="" style="width:140px;" />
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">事件年月</label>
+									<div class='input-group date fr'>
+										<input type='text' class="form-control" readonly id='eventDate' name="eventDate" />
+										<span class="input-group-addon sttime">
+				                            <span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+								<!--<div class="label-group clearfix fl">
+									<label class="form-label fl">事件编号</label>
+									<input type="text" name="eventCode" id="" value="" class="fr" placeholder="请输入事件编号"/>
+								</div>-->
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">姓名</label>
+									<input type="text" name="intercepterName" id="" value="" class="fr" placeholder="请输入事件编号"/>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">工号</label>
+									<input type="text" name="intercepterJobNum" id="" value="" class="fr" placeholder="请输入事件编号"/>
+								</div>
+							</div>
+							
+						</form>
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>区域</th>
+								<th>姓名</th>
+								<th>工号</th>
+								<th>补付款金额</th>
+								<th>涉及商品金额</th>
+								<th>截停数</th>
+								<th>内盗</th>
+								<th>外盗</th>
+								<th>内外勾结</th>
+								<th>事件年月</th>
+							</tr>
+						</thead>
+						<script id="tpl" type="text/x-smarty-tmpl">
+							{foreach $content as $i => $con}
+							<tr>
+								<th>{$con.secondRegionName}</th>
+								<th>{$con.intercepterName}</th>
+								<th>{$con.intercepterJobNum}</th>
+								<th>{$con.fillingMoney}</th>
+								<th>{$con.goodsAmount}</th>
+								<th>{$con.intercepterQuantity}</th>
+								<th>{$con.internalTheftQuantity}</th>
+								<th>{$con.externalTheftQuantity}</th>
+								<th>{$con.collusionTheftQuantity}</th>
+								<th>{$con.eventDate}</th>
+							</tr>
+							{/foreach}
+						</script>
+						<tbody id="person-list">
+						</tbody>
+					</table>
+					<div class="page-cont pr">
+						<button type="button" class="btn btn-default" id="exportList"><a href="javascript:exportToexcel()">导出</a></button>
+						<script id="pageNum" type="text/x-smarty-tmpl">
+							<span>第<span>{$curr}</span>页</span>,<span>共<span>{$allpage}</span>页</span><span>(每页{$size}条)</span>
+						</script>
+						<div class="page-mesg page-mesg1 pa" id="pagetips">
+						</div>
+						<div id="pageNumber"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="menuContent" class="menuContent" style="display:none; position: absolute;">
+			<ul id="treeDemo" class="ztree" style="margin-top:0; width:180px; height: 300px;"></ul>
+		</div>
+		<!--<script src="../js/jquery-1.12.4.min.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/laypage.js"></script>
+    <script src="../js/smart.min.js"></script>
+    <script src="../js/bootstrap-datetimepicker.min.js"></script>
+    <script src="js/inter-exter-management.js"></script>-->
+	</body>
+
+</html>

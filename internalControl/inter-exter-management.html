@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>内外盗管理</title>
+		<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="../styl/bootstrap-datetimepicker.min.css">
+		<link rel="stylesheet" href="../styl/bootstrap.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/inter-exter-management.css">
+		<!--<link rel="stylesheet" href="../js/zTree_v3/css/zTreeStyle/zTreeStyle.css" />-->
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
+		<script src="../js/common.js"></script>
+		
+		<style type="text/css">
+			.btn-group{float: right;top: 20px;}
+			.multiselect-selected-text{color: #55575a;}
+			.label-group .multiselect-container>li.multiselect-group label{padding-left: 10px;}
+			.page-cont .page-mesg{right: 795px;}
+			.formsSearch form > div.right{text-align: initial;width: auto;border-radius: 0;}
+			a:hover{text-decoration: none;}
+		</style>
+	</head>
+	<body>
+		<header>
+			<div class="header clearfix contents">
+				<img src="../images/logo_content.png" />
+				<li class="dropdown fr">
+					<span class="username"></span>
+					<a href="javascript:;" id="logout">退出</a>
+				</li>
+			</div>
+		</header>
+		<div id="menuTree" class="nav-menu"></div>
+		<script type="text/javascript">
+			getMenu("920840367680593950","920840367680593971");
+			logout();
+		</script>
+		<div class="right-cont">
+			<div class="table-cont">
+				<div class="right-nav clearfix">
+					<span class="fl">当前位置:</span>
+					<ol class="breadcrumb fl">
+						<li>首页</li>
+						<li>内控服务管理</li>
+						<li class="active">内外盗管理</li>
+					</ol>
+				</div>
+				<div class="show-table" id="nationCont">
+					<div class="formsSearch">
+						<form class="clearfix" action="javasctipt:void(0)" id="searchFrom">
+							<div class="fr right">
+								<button id="search">搜索</button>
+								<a href="javascript:exportToexcel()"><button type="button" class="btn btn-default" id="exportList" style="display: block;">导出</button></a>
+							</div>
+							<div class="fl left clearfix">
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">区域</label>
+									<script id="areasSel" type="text/x-smarty-tmpl">
+										{foreach $contents as $i => $con}
+										<option value="{$con.id}">{$con.name}</option>
+										{/foreach}
+									</script>
+									<input id="citySel" type="text" readonly value="" style="width:140px;" onclick="showMenu();" placeholder="请选择区域"/>
+									<input id="secondRegionId" type="hidden" name="secondRegionId" readonly value="" style="width:140px;" onclick="showMenu();" />
+									
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">门店</label>
+									<script id="secondStore" type="text/x-smarty-tmpl">
+										{foreach $contents as $i => $con}
+										<option value="{$con.id}">{$con.name}</option>
+										{/foreach}
+									</script>
+									<select name="storeId" class="fr" id="storeList">
+										<option value="">请选择门店</option>
+									</select>
+									<div class="tip err"><i class="error-tip inline-block">!</i>请先选择区域</div>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">事件年月</label>
+									<div class='input-group date fr'>
+										<input type='text' class="form-control" readonly id='eventDate' name="eventDate" />
+										<span class="input-group-addon sttime">
+				                            <span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">事件编号</label>
+									<input type="text" name="eventCode" id="" value="" class="fr" placeholder="请输入事件编号"/>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">事件类型</label>
+									<script id="eventType" type="text/x-smarty-tmpl">
+										{foreach $eventType as $i => $con}
+										<option value="{$con.code}">{$con.name}</option>
+										{/foreach}
+									</script>
+									<select name="eventType" class="fr" id="eventVal">
+										<option value="">请选择事件类型</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">处理方式</label>
+									<script id="dealType" type="text/x-smarty-tmpl">
+										{foreach $dealType as $i => $con}
+										<option value="{$con.code}">{$con.name}</option>
+										{/foreach}
+									</script>
+									<select name="dealType" class="fr" id="dealVal">
+										<option value="">请选择处理方式</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">是否蓝鹰</label>
+									<select name="isBlueEagle" class="fr">
+										<option value="">请选择</option>
+										<option value="1">是</option>
+										<option value="0">否</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">商品返还</label>
+									<select name="isReturnGoods" class="fr">
+										<option value="">请选择</option>
+										<option value="1">是</option>
+										<option value="0">否</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">商品买单</label>
+									<select name="isPayGoods" class="fr">
+										<option value="">请选择</option>
+										<option value="1">是</option>
+										<option value="0">否</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">是否惯偷</label>
+									<select name="isAlwaysSteal" class="fr">
+										<option value="">请选择</option>
+										<option value="1">是</option>
+										<option value="0">否</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">补付款≥2000</label>
+									<select name="fillPayOver" class="fr">
+										<option value="">请选择</option>
+										<option value="1">是</option>
+										<option value="0">否</option>
+									</select>
+								</div>
+								<div class="label-group clearfix fl">
+									<label class="form-label fl">涉及商品≥10倍</label>
+									<select name="overGoodsAmount" class="fr">
+										<option value="">请选择</option>
+										<option value="1">是</option>
+										<option value="0">否</option>
+									</select>
+								</div>
+							</div>
+							
+						</form>
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="checkth">
+									<!--<input type="checkbox" id="checkAll" name="checkAll" />-->
+									序号
+								</th>
+								<th>事件编号</th>
+								<th>区域</th>
+								<th>门店</th>
+								<th>事件类型</th>
+								<th>处理方式</th>
+								<th>是否蓝鹰</th>
+								<th>商品返还</th>
+								<th>涉及商品金额≥10倍</th>
+								<th>预付款≥2000</th>
+								<th>时间日期</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<script id="tpl" type="text/x-smarty-tmpl">
+							{foreach $content as $i => $con}
+							<tr>
+								<p>{$con.dealType}!</p>
+								<th class="checkth">
+									<!--<input type="checkbox" class="checkss" name="checkAll" />-->
+									{$i+1}
+								</th>
+								<th>{$con.eventCode}</th>
+								<th>{$con.secondRegionName}</th>
+								<th>{$con.storeName}</th>
+								<th>{$con.eventType}</th>
+								<th>{$con.dealType}</th>
+								<th>{$con.isBlueEagle}</th>
+								<th>{$con.isReturnGoods}</th>
+								<th>{$con.overGoodsAmount}</th>
+								<th>{$con.fillPayOver}</th>
+								<th>{$con.eventDate}</th>
+								<th>
+									<a href="javascript:void(0)" class="alert-btn" stealRecordId="{{$con.id}}">查看</a>
+								</th>
+							</tr>
+							{/foreach}
+						</script>
+						<tbody id="person-list">
+						</tbody>
+					</table>
+					<div class="page-cont pr">
+						<script id="pageNum" type="text/x-smarty-tmpl">
+							<span>第<span>{$curr}</span>页</span>,<span>共<span>{$allpage}</span>页</span><span>(每页{$size}条)</span>
+						</script>
+						<div class="page-mesg page-mesg1 pa" id="pagetips">
+						</div>
+						<div id="pageNumber"></div>
+					</div>
+				</div>
+			</div>
+
+			<!--详情页-->
+			<div class="detail-cont">
+				<div class="right-nav clearfix">
+					<span class="fl">当前位置:</span>
+					<ol class="breadcrumb fl">
+						<li>首页</li>
+						<li>内控服务管理</li>
+						<li>内外盗管理</li>
+						<li class="active">详情</li>
+					</ol>
+				</div>
+				<script id="detailTep" type="text/x-smarty-tmpl">
+					<div class="formsSearch detail-list">
+						<h3>基本信息</h3>
+						<div>
+							<span class="areas">区域：<span>{$content.secondRegionName}</span></span>
+							<span class="areas areaName">门店：<span>{$content.storeName}</span></span>
+						</div>
+						<ul>
+							<li>提交日期：<span> {$content.createdDate}</span></li>
+							<li>填写人：<span>{$content.createrName}</span></li>
+							<li>电话：<span>{$content.createrPhone}</span></li>
+						</ul>
+					</div>
+					<div class="formsSearch detail-list">
+						<h3>事件信息</h3>
+
+						<ul>
+							<li>案件编号 ：<span>{$content.eventCode}</span></li>
+							<li>事件日期：<span>{$content.eventDate}</span></li>
+							<li>当事人：<span>{$content.offenderName}&nbsp;&nbsp;{$content.offenderAge}&nbsp;&nbsp;{$content.offenderSex.label}</span></li>
+							<li>截停人/工号：<span>{$content.intercepterName}&nbsp;&nbsp;{$content.intercepterJobNum}</span></li>
+							<li>是否蓝鹰：<span>{$content.isBlueEagle}</span></li>
+							<li>经办人/工号：<span>{$content.transactorName}&nbsp;&nbsp;{$content.transactorJobNum}</span></li>
+							<li>事件类型：<span>{$content.eventType.label}</span></li>
+							<li class="innerType">盗窃员工类型：<span>{$content.offenderEmployeeType.label}</span></li>
+							<li class="innerType">盗窃员工所属小店：<span>{$content.offenderShopName}</span></li>
+							<!--<li>事件类型：<span>{$content.eventType.label}</span></li>-->
+							<li>处理方式：<span>{$content.dealType.label}</span></li>
+							<li>涉及金额：<span>{$content.goodsAmount}</span></li>
+							<li>补付金额：<span>{$content.fillingMoney}</span></li>
+							<li>商品返还：<span>{$content.isReturnGoods}</span></li>
+							<li>商品买单：<span>{$content.isPayGoods}</span></li>
+							<li>是否惯偷：<span>{$content.isAlwaysSteal}</span></li>
+							<li>备注：<span>{$content.remark}</span></li>
+							<li>
+								{$pic=[]}
+								{javascript}
+								   pic = content.pictures.split("|")
+								   
+								{/javascript}
+								{foreach $pic as $i => $p}
+							   		<img src="{$p}" onclick="openImg('{$p}')"/>
+							    {/foreach}
+							</li>
+							<li><button class="back-btn">返回</button></li>
+						</ul>
+						
+					</div>
+				</script>
+				<div class="show-table" id="detailInfo">
+
+				</div>
+			</div>
+		</div>
+		<div id="tong" class="" style="display: none;"><img src="../images/index_bg2.png" style="width: 100%;"></div>
+		<div id="menuContent" class="menuContent" style="display:none; position: absolute;">
+			<ul id="treeDemo" class="ztree" style="margin-top:0; width:180px; height: 300px;"></ul>
+		</div>
+		<!--<script src="../js/jquery-1.12.4.min.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/laypage.js"></script>
+    <script src="../js/smart.min.js"></script>
+    <script src="../js/bootstrap-datetimepicker.min.js"></script>
+    <script src="js/inter-exter-management.js"></script>-->
+    <script src="../js/laypage.js"></script>
+		<script src="../js/smart.min.js"></script>
+		<script src="../js/layer/layer.js"></script>
+		<script src="../js/jquery.binarytransport.js"></script>
+		<script src="../js/bootstrap-datetimepicker.min.js"></script>
+        <script src="../js/zTree_v3/js/jquery.ztree.core.js"></script>
+        <script src="../js/zTree_v3/js/jquery.ztree.excheck.js"></script>
+		<script src="js/inter-exter-management.js"></script>
+	</body>
+
+</html>
