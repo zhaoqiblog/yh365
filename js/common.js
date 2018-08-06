@@ -435,7 +435,6 @@ function ajaxsExport(urls,type,datas){
         responseType: 'arraybuffer',
         processData: false,
         success: function(result) {
-//          console.log(result)
             var linkElement = document.createElement('a');
             try {
                 var arrayBufferView = new Uint8Array(result);
@@ -449,8 +448,8 @@ function ajaxsExport(urls,type,datas){
                     "cancelable": false
                 });
                 linkElement.dispatchEvent(clickEvent);
-            } catch (ex) {
-//              console.log(ex);
+            } catch (err) {
+                console.log(err);
             }
         }
     })

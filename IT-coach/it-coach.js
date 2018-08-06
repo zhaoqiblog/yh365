@@ -87,12 +87,12 @@ var vm = new Vue({
 });
 
 function getshop() {
+	var datas={"type":'2'}
     $.ajax({
         url: url_main+"isp/api/v1/protected/officeMap/tree",
         type: 'post',
         headers: headers,
-        data:{type:'0'},
-//      contentType: 'application/json',
+        data:datas,
         dataType:'json',
         success: function(result) {
             // console.log($.parseJSON(result));

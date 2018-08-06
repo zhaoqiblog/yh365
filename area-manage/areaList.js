@@ -12,10 +12,10 @@ $('body').on('click', '.add-btn', function() {
 })
 $(document).ready(function() {
    relogin();
-    queryData(url_main+"/isp/api/v1/protected/officeMap?parentId=0",function(res){
+    queryData(url_main+"isp/api/v1/protected/officeMap?parentId=0",function(res){
     	console.log(res)
     	vm.areaList=res.data;
-    	queryData(url_main+"/isp/api/v1/protected/officeMap?parentId="+vm.areaList[0].id,function(res1){
+    	queryData(url_main+"isp/api/v1/protected/officeMap?parentId="+vm.areaList[0].id,function(res1){
     		vm.secondAreaList=res1.data
     	})
     });
@@ -109,7 +109,7 @@ var vm = new Vue({
     methods: {
     	//大区区域切换
     	changeArea :function(id){
-    		queryData(url_main+"/isp/api/v1/protected/officeMap?parentId="+id,function(res){
+    		queryData(url_main+"isp/api/v1/protected/officeMap?parentId="+id,function(res){
     			vm.secondAreaList=res.data;
     		})
     	},
@@ -289,7 +289,7 @@ var showSecArea = function() {
         })
     }
     /*查询区域数据*/
-function queryData(url,callback) {  //url_main+"/isp/api/v1/protected/officeMap?parentId=0"
+function queryData(url,callback) {  //url_main+"isp/api/v1/protected/officeMap?parentId=0"
     $.ajax({
         url: url,
         type: "get",

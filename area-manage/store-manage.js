@@ -255,7 +255,7 @@ var showSecArea = function() {
 function queryData() {
 	vm.queryparam.type="SHOP"
     $.ajax({
-        url: url_main+"/isp/api/v1/protected/officeMaps",
+        url: url_main+"isp/api/v1/protected/officeMaps",
         type: "get",
         headers: headers,
         data: vm.queryparam,
@@ -285,7 +285,7 @@ function queryData() {
 function searchArea(){
 	vm.queryparam.type="SECOND"
 	$.ajax({
-        url: url_main+"/isp/api/v1/protected/secondRegionMap",
+        url: url_main+"isp/api/v1/protected/secondRegionMap",
         type: "get",
         headers: headers,
         data: vm.queryparam,
@@ -297,7 +297,7 @@ function searchArea(){
     })
 //var datas={type:"1"}
 //	$.ajax({
-//      url: url_main+"/isp/api/v1/protected/officeMap/tree",
+//      url: url_main+"isp/api/v1/protected/officeMap/tree",
 //      type: "post",
 //      headers: headers,
 //      data:{type:"1"},

@@ -149,7 +149,7 @@ function exportlist(urls,type,datas){
     })
 }
 function exportToexcel(){
-	exportlist(url_main+"/isp/api/v1/protected/listBlueEagle/export","get",$("#searchFrom").serialize())
+	exportlist(url_main+"isp/api/v1/protected/listBlueEagle/export","get",$("#searchFrom").serialize())
 }
  function beforeClick(treeId, treeNode) {
 	var zTree = $.fn.zTree.getZTreeObj("treeDemo");
