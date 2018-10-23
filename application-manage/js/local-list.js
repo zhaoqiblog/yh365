@@ -87,10 +87,10 @@ $("body").on("click","#newModuleBtn",function(){  //添加新应用
 			$(".detail-cont").hide();
 			$("#new-module").parents(".right-cont").find(".table-cont").hide().end().end().show();
 			if(res.data.moduleType.code =="1"){
-			     $("#isApp").hide().find("input").attr("disabled","disabled")
+			     //$("#isApp").hide().find("input").attr("disabled","disabled")
 			     $("#isLink").show().find("input").removeAttr("disabled")
 			}else{
-			     $("#isApp").show().find("input").removeAttr("disabled")
+			    // $("#isApp").show().find("input").removeAttr("disabled")
 			     $("#isLink").hide().find("input").attr("disabled","disabled")
 			}
 		})
@@ -335,10 +335,10 @@ var data = $("#newVersion").serializeArray(),obj={};
 	var selectedvalue = $("input[name='moduleType']:checked").val();
 // alert($selectedvalue);
 	if(selectedvalue =="1"){
-	     $("#isApp").hide().find("input").attr("disabled","disabled")
+	     //$("#isApp").hide().find("input").attr("disabled","disabled")
 	     $("#isLink").show().find("input").removeAttr("disabled")
 	}else{
-	     $("#isApp").show().find("input").removeAttr("disabled")
+	     //$("#isApp").show().find("input").removeAttr("disabled")
 	     $("#isLink").hide().find("input").attr("disabled","disabled")
 	}
 }).on("click",".deleteVersion",function(){   //删除版本
